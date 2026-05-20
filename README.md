@@ -1,82 +1,109 @@
 # Application Tracking System (ATS)
--	Note: Live site may load slowly due to free hosting limitations.
-## Overview
 
-ATS is an Application Tracking System designed to streamline the recruitment process for organizations. This system helps manage job applications, track candidates, and facilitate the hiring workflow.
+ATS is a full-stack Next.js application for managing recruitment workflows. It includes candidate registration, admin approval, job posting, application tracking, profile management, statistics, email notifications, file uploads, and Gemini-powered application scoring.
 
 ## Features
 
-- Candidate management
+- Candidate and admin authentication with HTTP-only cookies
+- Candidate job browsing, applications, and profile management
+- Admin job posting, editing, application review, and statistics
+- Super admin approval flow for new admins
+- Resume/application scoring with Google Gemini
+- Firebase Storage integration for uploaded files
+- MongoDB persistence with Mongoose models
 
-- Job posting and application tracking
-- Resume parsing and screening
-- Reporting and analytics
-- User-friendly interface
+## Tech Stack
 
-## Installation
+- Next.js App Router
+- React
+- Redux Toolkit
+- MongoDB with Mongoose
+- Firebase Storage
+- Gemini application scoring
+- Nodemailer email delivery
 
-To set up the ATS locally, follow these steps:
+## Project Structure
 
-1. Clone the repository:
-
-```
-git clone https://github.com/YosephSE/ATS.git
-```
-
-2. Navigate to the project directory:
-
-```
-cd ATS
-```
-
-3. Install dependencies:
-
-```
-npm install
-```
-```
-cd client
-```
-```
-npm install
+```text
+app/                 Next.js pages, layouts, and API route handlers
+components/          Shared UI components
+config/              Client-side service configuration
+customHooks/         Shared React hooks
+lib/server/          Server-only database, auth, model, email, and scoring code
+redux/               Redux store, slices, and API base path
+types/               Shared TypeScript types
+utils/               Client utilities
+public/              Static assets
 ```
 
-4. Configure the environment variables (see Configuration section)
-5. Run the application:
- - Backend
+## Local Setup
 
-```
-npm start
-```
-  - Frontend
-```
-cd client
-```
-```
-npm start
-```
-## Configuration
+Install dependencies from the repository root:
 
-Create a `.env` file in the root directory and add the following variables:
-
+```bash
+pnpm install
 ```
+
+Run the development server:
+
+```bash
+pnpm dev
+```
+
+Build locally:
+
+```bash
+pnpm build
+```
+
+Type-check locally:
+
+```bash
+pnpm typecheck
+```
+
+Run a production build locally:
+
+```bash
+pnpm start
+```
+
+## Environment Variables
+
+Create a root `.env.local` file for local development and configure these values:
+
+```bash
 MONGO_URI=your_database_connection_string
-SECRET_KEY=jwt_secret_key
-PORT=8080
+SECRET_KEY=your_jwt_secret
+API_KEY=your_gemini_api_key
+EMAIL_USER=your_email_user
+EMAIL_PASS=your_email_password
+
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
 ```
 
+## API
 
-## Contributing
+The backend API now lives in the Next.js App Router under `app/api`. Client code should use same-origin `/api/*` paths.
 
-We welcome contributions to the ATS project. Please follow these steps to contribute:
+Main API areas:
 
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/AmazingFeature`)
-3. Make your changes
-4. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
+- `/api/candidates/*`
+- `/api/admins/*`
+- `/api/jobs/*`
+- `/api/applications/*`
 
-## License
+Server-only helpers, database models, auth utilities, email delivery, and scoring logic live under `lib/server`.
 
-This project is licensed under the MIT License.
+## Deployment
+
+Deploy the repository root as a Next.js project on Vercel.
+
+- Install command: `pnpm install`
+- Build command: `pnpm build`
+- Node.js: `20.9.0` or newer

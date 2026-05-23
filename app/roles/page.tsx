@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { Suspense, useEffect } from "react";
 import { Button } from "@mui/material";
 import Header from "@/components/Header";
 import { useAppDispatch } from "@/redux/Hooks";
 import Modal from "../../components/Modal";
+import { useSearchParams } from "next/navigation";
 import {
   setLoginCandidate,
   setLoginAdmin,
@@ -11,8 +12,16 @@ import {
   setContact,
 } from "@/redux/slices/ModalSlice";
 
-const RolesPage = () => {
+const RolesContent = () => {
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("modal") === "contact") {
+      dispatch(setContact());
+    }
+  }, [dispatch, searchParams]);
+
   return (
     <div className="relative min-h-screen flex flex-col">
       <div className="sticky top-0 z-10">
@@ -101,6 +110,14 @@ const RolesPage = () => {
 
       <Modal />
     </div>
+  );
+};
+
+const RolesPage = () => {
+  return (
+    <Suspense>
+      <RolesContent />
+    </Suspense>
   );
 };
 

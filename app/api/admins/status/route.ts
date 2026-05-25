@@ -8,8 +8,6 @@ export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-
     const { token } = await request.json();
 
     if (!token) {
@@ -17,6 +15,8 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      await connectDB();
+
       const decoded = verifyAuthToken(token);
       const admin = await Admin.findById(decoded._id);
 
